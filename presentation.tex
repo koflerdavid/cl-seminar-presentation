@@ -11,11 +11,15 @@
 \usepackage{listings}
 \usepackage{caption}
 \usepackage{url}
+%\usepackage[pdflatex]{hyperref}
+
+\usepackage{tikz}
+\usetikzlibrary{automata,positioning}
 
 \title{Checking Equivalence of Nondeterministic Finite Automata}
 \author{David Kofler}
 \date{\today}
-\institute{University of Innsbruck \newline Institute of Computer Science}
+\institute{Master Seminar 2 \newline University of Innsbruck \newline Institute of Computer Science}
 
 
 \begin{document}
@@ -49,6 +53,23 @@
   \end{block}
 \end{frame}
 
+\begin{frame}{Example}
+  \begin{figure}
+    \begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto]
+      \node[state,initial] (q_0) [] {$Q_0$};
+      \node[state] (q_1) [right=of q_0] {$Q_1$};
+      \node[state] (q_2) [right=of q_1] {$Q_2$};
+      \node[state,accepting] (q_3) [right=of q_2] {$Q_3$};
+        \path[->]
+        (q_0) edge node {a} (q_1)
+        (q_1) edge node {a,b} (q_2)
+              %edge node [below] {b} (q_2)
+        (q_2) edge node {b} (q_3)
+        (q_3) edge [loop] node {a, b} ();
+    \end{tikzpicture}
+  \end{figure}
+\end{frame}
+
 \begin{frame}{Proving language equivalence}
   \begin{block}{Bisimulations}
     \begin{itemize}
@@ -72,7 +93,7 @@
 \begin{frame}{Nondeterministic finite automata}
   \begin{block}{Definition}
     \begin{itemize}
-      \item $M := (S, \Sigma, o, \delta)$
+      \item $N := (S, \Sigma, o, \delta)$
       \item $S$ and $\Sigma$ are finite sets
       \item $o : S \to \{\emptyset, \mathbf{\epsilon} \}$,
             $\delta : S \to \Sigma \to \mathcal{P}(S)$
@@ -100,8 +121,8 @@
   %\end{block}
 
   \begin{block}{Determinised NFA}
-    We obtain the determinised automaton $(\mathcal{P}(S), \Sigma, o^{\#}, d^{\#})$
-      from the NFA $(S, \Sigma, o, \delta)$
+    We obtain the determinised automaton $N^\# = (\mathcal{P}(S), \Sigma, o^{\#}, d^{\#})$
+      from the NFA $N = (S, \Sigma, o, \delta)$
   \end{block}
 \end{frame}
 
@@ -124,6 +145,29 @@
         $\mathcal{L}(X_1) = \mathcal{L}(X_2) \Leftrightarrow \exists$ bisimulation $\doteqdot^\#: X_1 \doteqdot^\# X_2$
     \end{itemize}
   \end{block}
+\end{frame}
+
+\subsection{Lattice structure of Determinsed NFA}
+
+\begin{frame}{Lattices}
+  \begin{block}{Lower Semi-Lattice}
+    \begin{itemize}
+      \item Set $X$ with operation $+: X \to X \to X$
+      \item $+$ is associative and commutative
+      \item $\forall x \in X: x + x = x$, $\exists 0_X \in X: \forall x \in X: x + 0_X = x$
+      \item $f: X \to X$ homomorphism $\Leftrightarrow f(0_X) = 0_X $\\
+            and $\forall x, y \in X: f(x+y) = f(x) + f(y)$
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{States of Determinised NFA}
+  \begin{itemize}
+    \item Determinised NFA: $M^\# = (\mathcal{P}(S), \Sigma, o^\#, \delta^\#)$
+    \item $o^\#$ and $\delta^\#$ are homomorphisms
+    \item $\mathcal{L}$ is also a homomorphism
+    \item $\mathcal{L}(X \cup Y) = \mathcal{L}({X}) \cup \mathcal{L}({Y})$
+  \end{itemize}
 \end{frame}
 
 \section{Computing bisimulations}
@@ -202,20 +246,29 @@
 \begin{frame}{Algorithms}
   \begin{itemize}
     \item Naive algorithm: Builds a bisimulation
-    \item Hopcroft and Karp's algorithm: Bisimulation up to equivalence
-    \item Contribution of Filippo Bonchi and Damien Pous:
+    \item Hopcroft and Karp's algorithm\cite{hopcroft1971linear}: Bisimulation up to equivalence
+    \item Contribution of Filippo Bonchi and Damien Pous\cite{bonchi2013checking}:
       Bisimulation up to congruence ($c : \mathcal{P}(S)^2 \to \mathcal{P}(S)^2)$):\\
         \begin{align}
           u(\text{R}) &= \{(X_1 \cup X_2, Y_1 \cup Y_2) | X_1 \text{ R } Y_1, X_2 \text{ R } Y_2\}\\
           u&\text{ is monotone and preserves }\rightarrowtail\\
           c &= (s \cup r \cup t \cup id \cup u)^\omega
         \end{align}
-    \item Antichain algorithm: simulation up to upward closure
+    \item Antichain algorithms
+      \cite{doyen2010antichain}\cite{abdulla2010simulation}\cite{lengal2012vata}:
+      simulation up to upward closure
   \end{itemize}
 \end{frame}
 
 \section{Experimental Results}
 
+
+
 \section{References}
+
+\begin{frame}[allowframebreaks]{References}
+  \bibliographystyle{acm}
+  \bibliography{literature}
+\end{frame}
 
 \end{document}
