@@ -11,7 +11,9 @@
 \usepackage{listings}
 \usepackage{caption}
 \usepackage{url}
-%\usepackage[pdflatex]{hyperref}
+\usepackage[backend=biber,style=trad-abbrv]{biblatex}
+
+\bibliography{literature}
 
 \usepackage{tikz}
 \usetikzlibrary{automata,positioning}
@@ -262,13 +264,17 @@
 
 \section{Experimental Results}
 
+\section{Conclusion}
 
-
-\section{References}
-
-\begin{frame}[allowframebreaks]{References}
-  \bibliographystyle{acm}
-  \bibliography{literature}
+\begin{frame}{Main Takeaways}
+  \begin{itemize}
+    \item Naive algorithm, ACs, HK, HKC, and other variants can be uniformely
+      presented by using bisimulations.
+    \item The AC algorithms perform astonishingly bad
+      \begin{itemize}
+        \item Maybe \textbf{libvata} is not optimized for string automata
+      \end{itemize}
+  \end{itemize}
 \end{frame}
 
 \end{document}
