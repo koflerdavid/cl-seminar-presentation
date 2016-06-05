@@ -1,0 +1,92 @@
+\begin{frame}<presentation:0>{Deterministic finite automata}
+  \begin{block}{Definition}
+    \begin{itemize}
+      \item $M := (S, \Sigma, o, \delta)$
+      \item $S$ and $\Sigma$ are finite sets
+      \item $o : S \to \{\emptyset, \{\epsilon\} \}$
+      \item $\delta : S \to \Sigma \to S$
+      \item $\mathcal{L} : S \to \mathcal{P}(\Sigma^\ast)$
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Language Equivalence of DFA states}
+    \begin{itemize}
+      \item $\mathcal{L}(x) = o(x) \cup \bigcup_{a \in A}{\mathcal{L}({\delta(x, a)})}$
+      \item $x_1 \sim x_2 \Leftrightarrow \mathcal{L}(x_1) = \mathcal{L}(x_2)$
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}<presentation:0>{Proving language equivalence}
+  \begin{block}{Bisimulations}
+    \begin{itemize}
+      \item Relation between states: $\doteqdot \subseteq S \times S$
+      \item $\doteqdot \text{ is bisimulation } \Leftrightarrow x_1 \doteqdot x_2 \Rightarrow $
+        \begin{itemize}
+          \item $o(x) = o(y)$, and
+          \item $\forall a \in \Sigma: \delta(x_1, a) \doteqdot \delta(x_2, a)$
+        \end{itemize}
+    \end{itemize}
+   \end{block}
+
+   \begin{block}{Language equivalence}
+     Coinduction:
+     $\mathcal{L}(x_1) = \mathcal{L}(x_2) \Leftrightarrow \exists$ bisimulation $\doteqdot: x_1 \doteqdot x_2$
+   \end{block}
+\end{frame}
+
+\begin{frame}<presentation:0>{Lattices}
+  \begin{block}{Lower Semi-Lattice}
+    \begin{itemize}
+      \item Set $X$ with operation $+: X \to X \to X$
+      \item $+$ is associative and commutative
+      \item $\forall x \in X: x + x = x$, $\exists 0_X \in X: \forall x \in X: x + 0_X = x$
+      \item $f: X \to X$ homomorphism $\Leftrightarrow f(0_X) = 0_X $\\
+            and $\forall x, y \in X: f(x+y) = f(x) + f(y)$
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}<presentation:0>{States of Determinised NFA}
+  \begin{itemize}
+    \item Determinised NFA: $M^\# = (\mathcal{P}(S), \Sigma, o^\#, \delta^\#)$
+    \item $o^\#$ and $\delta^\#$ are homomorphisms
+    \item $\mathcal{L}$ is also a homomorphism
+    \item $\mathcal{L}(X \cup Y) = \mathcal{L}({X}) \cup \mathcal{L}({Y})$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}<presentation:0>{Optimizations}
+  \begin{block}{Compatible functions}
+    \begin{itemize}
+      \item $id, f \circ g, \cup F, f^\omega$
+      \item Symmetric ($s$), reflexive ($r$) and transitive closure ($t$)
+      \item Equivalence closure: $e = (s \cup r \cup t \cup id)^\omega$
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Optimization}
+    \begin{itemize}
+      \item $R$ is bisimulation if $R \rightarrowtail R$
+      \item $R$ is bisimulation up to $f$ if $R \rightarrowtail f(R)$
+      \item If $f$ is compatible, hence monotone, $|R| \leq |f(R)|$ !
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}<presentation:0>{Algorithms}
+  \begin{itemize}
+    \item Naive algorithm: Builds a bisimulation
+    \item Hopcroft and Karp's algorithm\cite{hopcroft1971linear}: Bisimulation up to equivalence
+    \item Contribution of Filippo Bonchi and Damien Pous\cite{bonchi2013checking}:
+      Bisimulation up to congruence ($c : \mathcal{P}(S)^2 \to \mathcal{P}(S)^2)$):\\
+        \begin{align}
+          u(\text{R}) &= \{(X_1 \cup X_2, Y_1 \cup Y_2) | X_1 \text{ R } Y_1, X_2 \text{ R } Y_2\}\\
+          u&\text{ is monotone and preserves }\rightarrowtail\\
+          c &= (s \cup r \cup t \cup id \cup u)^\omega
+        \end{align}
+    \item Antichain algorithms
+      \cite{doyen2010antichain}\cite{abdulla2010simulation}\cite{lengal2012vata}:
+      simulation up to upward closure
+  \end{itemize}
+\end{frame}

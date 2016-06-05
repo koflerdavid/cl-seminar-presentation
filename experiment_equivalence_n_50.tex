@@ -1,0 +1,16 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+%\begin{table}[]
+%\centering
+%\caption{My caption}
+%\label{my-label}
+\begin{tabular}{l|llll|llll}
+\multirow{2}{*}{} & \multicolumn{4}{l|}{Required time {[}s{]}} & \multicolumn{4}{l}{Processed pairs} \\ \cline{2-9}
+                  & 50\%     & 90\%     & 99\%     & 100\%     & 50\%   & 90\%   & 99\%    & 100\%   \\ \hline
+HK                & 0.007    & 0.022    & 0.050    & 0.119     & 2511   & 6299   & 12.5k   & 25.2k   \\
+AC                & 0.002    & 0.003    & 0.142    & 1.083     & 112    & 245    & 2130    & 5208    \\
+HKC               & 0.000    & 0.000    & 0.000    & 0.000     & 21     & 26     & 32      & 63      \\
+AC'               & 0.002    & 0.002    & 0.038    & 0.2011    & 79     & 131    & 1098    & 1926    \\
+HKC'              & 0.000    & 0.000    & 0.000    & 0.000     & 18     & 23     & 28      & 58
+\end{tabular}
+%\end{table}
