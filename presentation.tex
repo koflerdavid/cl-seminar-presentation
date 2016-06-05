@@ -10,6 +10,7 @@
 \graphicspath{{./images/}}
 \usepackage{listings}
 \usepackage{caption}
+\usepackage{multirow}
 \usepackage{url}
 \usepackage[backend=biber,style=trad-abbrv]{biblatex}
 
@@ -34,175 +35,157 @@
 	\tableofcontents
 \end{frame}
 
-\section{Deterministic finite automata}
-
-\begin{frame}{Deterministic finite automata}
-  \begin{block}{Definition}
-    \begin{itemize}
-      \item $M := (S, \Sigma, o, \delta)$
-      \item $S$ and $\Sigma$ are finite sets
-      \item $o : S \to \{\emptyset, \mathbf{\epsilon} \}$
-      \item $\delta : S \to \Sigma \to S$
-      \item $\mathcal{L} : S \to \mathcal{P}(\Sigma^\ast)$
-    \end{itemize}
-  \end{block}
-
-  \begin{block}{Language Equivalence of DFA states}
-    \begin{itemize}
-      \item $\mathcal{L}(x) = o(x) \cup \bigcup_{a \in A}{\mathcal{L}({\delta(x, a)})}$
-      \item $x_1 \sim x_2 \Leftrightarrow \mathcal{L}(x_1) = \mathcal{L}(x_2)$
-    \end{itemize}
-  \end{block}
+\begin{frame}{Main Source}
+  \fullcite{bonchi2013checking}
 \end{frame}
 
-\begin{frame}{Example}
-  \begin{figure}
-    \begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto]
-      \node[state,initial] (q_0) [] {$Q_0$};
-      \node[state] (q_1) [right=of q_0] {$Q_1$};
-      \node[state] (q_2) [right=of q_1] {$Q_2$};
-      \node[state,accepting] (q_3) [right=of q_2] {$Q_3$};
-        \path[->]
-        (q_0) edge node {a} (q_1)
-        (q_1) edge node {a,b} (q_2)
-              %edge node [below] {b} (q_2)
-        (q_2) edge node {b} (q_3)
-        (q_3) edge [loop] node {a, b} ();
-    \end{tikzpicture}
-  \end{figure}
+\section{Introduction}
+
+
+
+\begin{frame}{Applications}
+  \begin{itemize}
+    \item Model checking
+    \item Compiler construction
+    \item Testing microchips
+    \item Homework/Exams: Did I/a student simplify a given automata correctly?
+  \end{itemize}
 \end{frame}
 
-\begin{frame}{Proving language equivalence}
-  \begin{block}{Bisimulations}
-    \begin{itemize}
-      \item Relation between states: $\doteqdot \subseteq S \times S$
-      \item $\doteqdot \text{ is bisimulation } \Leftrightarrow x_1 \doteqdot x_2 \Rightarrow $
-        \begin{itemize}
-          \item $o(x) = o(y)$, and
-          \item $\forall a \in \Sigma: \delta(x_1, a) \doteqdot \delta(x_2, a)$
-        \end{itemize}
-    \end{itemize}
-   \end{block}
-
-   \begin{block}{Language equivalence}
-     Coinduction:
-     $\mathcal{L}(x_1) = \mathcal{L}(x_2) \Leftrightarrow \exists$ bisimulation $\doteqdot: x_1 \doteqdot x_2$
-   \end{block}
+\begin{frame}{Complexity}
+  \begin{itemize}
+    \item For DFA: $\mathcal{O}(n + \alpha(n))$ algorithm by Hopcroft and Karp\\
+          \fullcite{hopcroft1971linear}
+    \item For NFA: $\mathcal{O}(2^n)$ (PSPACE-complete)
+  \end{itemize}
 \end{frame}
 
-\section{Nondeterministic finite automata}
+\input{example_1}
+
+\input{example_2}
 
 \begin{frame}{Nondeterministic finite automata}
   \begin{block}{Definition}
     \begin{itemize}
-      \item $N := (S, \Sigma, o, \delta)$
-      \item $S$ and $\Sigma$ are finite sets
-      \item $o : S \to \{\emptyset, \mathbf{\epsilon} \}$,
-            $\delta : S \to \Sigma \to \mathcal{P}(S)$
-      \item $\mathcal{L} : S \to \mathcal{P}(\Sigma^\ast)$
+      \item $N := (Q, \Sigma, o, \delta)$
+      \item $Q$ and $\Sigma$ are finite sets
+      \item $o : Q \to \{\emptyset, \{\epsilon\} \}$
+      \item $\delta : Q \to \Sigma \to \mathcal{P}(Q)$
+      \item $\mathcal{L} : Q \to \mathcal{P}(\Sigma^\ast)$
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Naive algorithm for checking equivalence}
+  \begin{align*}
+    \underline{Naive(p, q)}: &\quad Q \to Q \to \{true, false\} \\
+    \text{(1) } & R := \emptyset, todo := \emptyset \\
+    \text{(2) } & todo := todo \cup \{(p, q)\} \\
+    \text{(3) } & \text{while } todo \neq \emptyset \text{ do}\\
+      & \text{(3.1)}\quad todo := todo \setminus (p', q')\\
+      & \textbf{(3.2)}\quad \textbf{if } \mathbf{(p', q') \in} \textbf{ R} \textbf{ then goto (3)}\\
+      & \text{(3.3)}\quad \text{if } o(p') \neq o(q) \text{ then return } false\\
+      & \text{(3.4)}\quad todo := todo \cup \bigcup_{a \in \Sigma}{(\delta(p', a), \delta(q', a))}\\
+      & \text{(3.5)}\quad R := R \cup \{(p', q')\} \\
+    \text{(4) } & \text{return } true\\
+  \end{align*}
+\end{frame}
+
+\begin{frame}{Language equivalence of NFAs}
+  \begin{block}{Bisimulations on sets of states}<1->
+    \begin{itemize}
+      \item Relation between sets of states: $R \subseteq \mathcal{P}(Q)^2$% \times \mathcal{P}(Q)$
+      \item $R$ is bisimulation $\Leftrightarrow \forall Q_1, Q_2 \in \mathcal{P}(Q): $
+        \begin{itemize}
+          \item $o^\#(Q_1) = o^\#(Q_2)$, and
+          \item $\forall a \in \Sigma: (\delta^\#(Q_1, a), \delta^\#(Q_2, a)) \in R$
+        \end{itemize}
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Language equivalence}<2->
+    \begin{itemize}
+      %\item $p \sim q \Leftrightarrow \mathcal{L}(\{p\}) = \mathcal{L}(\{q\})$
+      \item
+      Coinduction:\\
+        $\mathcal{L}(P) = \mathcal{L}(Q) \Leftrightarrow \exists$ bisimulation $R: (P, Q) \in R$
     \end{itemize}
   \end{block}
 \end{frame}
 
 \begin{frame}{Determinisation by powerset construction}
-  %\begin{block}{Powerset construction}
-    %\begin{itemize}
-      \begin{align}
-        o^\#(X) = &\begin{cases}
-            o(x)                    &\text{ if } X = \{x\}, x \in S\\
-            \emptyset               &\text{ if } X = \emptyset\\
-            o^\#(X_1) \cup o^(X_2)  &\text{ if } X = X_1 \cup X_2\\
-          \end{cases}\\
-        \delta^\#(X, a) = &\begin{cases}
-            \delta(x, a)                              &\text{ if } X =\{x\}, x \in S\\
-            \emptyset                                 &\text{ if } X = \emptyset\\
-            \delta^\#(X_1, a) \cup \delta^\#(X_2, a)  &\text{ if } X = X_1 \cup X_2\\
-          \end{cases}
-      \end{align}
-    %\end{itemize}
-  %\end{block}
+  \begin{figure}
+    \begin{align*}
+      o^\#(Q) &= \bigcup_{q \in Q} o(q)\\
+      \delta^\#(Q, a) &= \bigcup_{q \in Q} \delta(q, a)
+      %o^\#(X) = &\begin{cases}
+      %    o(x)                    &\text{ if } X = \{x\}, x \in S\\
+      %    \emptyset               &\text{ if } X = \emptyset\\
+      %    o^\#(X_1) \cup o^(X_2)  &\text{ if } X = X_1 \cup X_2\\
+      %  \end{cases}\\
+      %\delta^\#(X, a) = &\begin{cases}
+      %    \delta(x, a)                              &\text{ if } X =\{x\}, x \in S\\
+      %    \emptyset                                 &\text{ if } X = \emptyset\\
+      %    \delta^\#(X_1, a) \cup \delta^\#(X_2, a)  &\text{ if } X = X_1 \cup X_2\\
+      %  \end{cases}
+    \end{align*}
+  \end{figure}
 
-  \begin{block}{Determinised NFA}
+  \begin{block}{Determinised NFA}<2->
     We obtain the determinised automaton $N^\# = (\mathcal{P}(S), \Sigma, o^{\#}, d^{\#})$
       from the NFA $N = (S, \Sigma, o, \delta)$
   \end{block}
 \end{frame}
 
-\begin{frame}{Language equivalence}
-  \begin{block}{Bisimulations on sets of states}
-    \begin{itemize}
-      \item Relation between sets of states: $\doteqdot \subseteq \mathcal{P}(S) \times \mathcal{P}(S)$
-      \item $\doteqdot$ is bisimulation $\Leftrightarrow \forall X_1, X_2 \in \mathcal{P}(S): $
-        \begin{itemize}
-          \item $o^\#(X_1) = o^\#(X_2)$, and
-          \item $\forall a \in \Sigma: \delta^\#(X_1, a) \doteqdot \delta^\#(X_2, a)$
-        \end{itemize}
-    \end{itemize}
-  \end{block}
-
-  \begin{block}{Language equivalence}
-    \begin{itemize}
-      \item $x_1 \sim x_2 \Leftrightarrow \mathcal{L}(\{x_1\}) = \mathcal{L}(\{x_2\})$
-      \item Coinduction:\\
-        $\mathcal{L}(X_1) = \mathcal{L}(X_2) \Leftrightarrow \exists$ bisimulation $\doteqdot^\#: X_1 \doteqdot^\# X_2$
-    \end{itemize}
-  \end{block}
-\end{frame}
-
-\subsection{Lattice structure of Determinsed NFA}
-
-\begin{frame}{Lattices}
-  \begin{block}{Lower Semi-Lattice}
-    \begin{itemize}
-      \item Set $X$ with operation $+: X \to X \to X$
-      \item $+$ is associative and commutative
-      \item $\forall x \in X: x + x = x$, $\exists 0_X \in X: \forall x \in X: x + 0_X = x$
-      \item $f: X \to X$ homomorphism $\Leftrightarrow f(0_X) = 0_X $\\
-            and $\forall x, y \in X: f(x+y) = f(x) + f(y)$
-    \end{itemize}
-  \end{block}
-\end{frame}
-
-\begin{frame}{States of Determinised NFA}
+\begin{frame}{Contribution of Pous et Bonchi}
   \begin{itemize}
-    \item Determinised NFA: $M^\# = (\mathcal{P}(S), \Sigma, o^\#, \delta^\#)$
-    \item $o^\#$ and $\delta^\#$ are homomorphisms
-    \item $\mathcal{L}$ is also a homomorphism
-    \item $\mathcal{L}(X \cup Y) = \mathcal{L}({X}) \cup \mathcal{L}({Y})$
+      \item<1-> $\textbf{(3.2)}\quad \textbf{if } \mathbf{(p', q') \in} \textbf{ R} \textbf{ then goto (3)}$
+      \item<2-> $(p', q') \in R$ can be replaced by $(p', q') \in f(R)$
+      \item<2-> $f$ has to be \textbf{compatible}
+      \item<3-> Existing algorithms differ only by $f$
+      \item<4-> There is a very effective choice of $f$ for NFAs
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Compatible functions}
+  \begin{itemize}
+    \item<1-> Identity function
+    \item<2-> Symmetric closure: $(q, p) \in R \Rightarrow (p, q) \in R$
+    \item<3-> Equivalence closure:
+      \begin{align*}
+        \forall p: (p, p) \in R\\
+        (p, q) \in R \Rightarrow (q, p) \in R\\
+        (p, q) \in R \land (q, r) \in R \Rightarrow (p, r) \in R\\
+      \end{align*}
+    \item<4-> Congruence closure (for determinised NFAs):\\
+        $(P_1, Q_1) \in R \land (P_2, Q_2) \in R \Rightarrow (P_1 \cup Q_2, P_2 \cup Q_2) \in R$
   \end{itemize}
 \end{frame}
 
-\section{Computing bisimulations}
-
-\begin{frame}{Naive algorithm}
-  \begin{align*}
-    \underline{Naive(x, y)}: &\quad S \to S \to \{true, false\} \\
-    \text{(1) } & R := \emptyset, todo := \emptyset;\\
-    \text{(2) } & todo := todo \cup \{(x, y)\};\\
-    \text{(3) } & \text{while } todo \neq \emptyset \text{ do}\\
-      & \text{(3.1)}\quad todo := todo \setminus (x', y');\\
-      & \text{(3.2)}\quad \text{if } (x', y') \in R \text{ then goto (3)};\\
-      & \text{(3.3)}\quad \text{if } o(x') \neq o(y) \text{ then return } false;\\
-      & \text{(3.4)}\quad todo := todo \cup \bigcup_{a \in \Sigma}{(\delta(x', a), \delta(y', a))} \\
-      & \text{(3.5)}\quad R := R \cup \{(x', y')\} \\
-    \text{(4) } & \text{return } true;\\
-  \end{align*}
+\begin{frame}{Data structure for congruence closure}
+  \begin{block}{Hello}
+    \begin{itemize}
+        \item Binary decision diagrams
+        \item Pous and Bonchi's approach: Set rewriting
+        \item $(P, Q) \in c(R) \Leftrightarrow P \downarrow_R = Q \downarrow_R$
+    \end{itemize}
+  \end{block}
+  \begin{figure}
+    \input{example_set_rewriting}
+  \end{figure}
 \end{frame}
 
-\begin{frame}{Comments}
+\begin{frame}{Set rewriting}
   \begin{itemize}
-    \item The Algorithm terminates since $\mathcal{P}(S)$ is finite
-    \item The algorithm is similar for $(\mathcal{P}(S), \Sigma, o^\#, \delta^\#)$
-    \item Statement (3.2) is essential for optimisation:\\
-      \begin{itemize}
-        \item $\text{(3.2)}\quad \text{if } (x', y') \in R \text{ then goto (3)};$
-        \item $(x', y') \in R$ can be replaced by $(x', y') \in f(R)$
-        \item $f$ has to be $compatible$
-      \end{itemize}
+    \item Store only processed pairs and their normal forms
+    \item View $R$ as set of rewrite rules:
+      \begin{align*}
+        \forall (P, Q) \in R: \quad&P \rightsquigarrow P \cup Q\\
+                              &Q \rightsquigarrow P \cup Q\\
+        \forall Q: P \rightsquigarrow P' \Rightarrow & P \cup Q \rightsquigarrow P' \cup Q
+      \end{align*}
   \end{itemize}
 \end{frame}
-
-\section{Optimizations}
 
 \begin{frame}{Compatibility}
   \begin{block}{Progression}
@@ -227,54 +210,55 @@
   \end{block}
 \end{frame}
 
-\begin{frame}{Optimizations}
-  \begin{block}{Compatible functions}
-    \begin{itemize}
-      \item $id, f \circ g, \cup F, f^\omega$
-      \item Symmetric ($s$), reflexive ($r$) and transitive closure ($t$)
-      \item Equivalence closure: $e = (s \cup r \cup t \cup id)^\omega$
-    \end{itemize}
-  \end{block}
-
-  \begin{block}{Optimization}
-    \begin{itemize}
-      \item $R$ is bisimulation if $R \rightarrowtail R$
-      \item $R$ is bisimulation up to $f$ if $R \rightarrowtail f(R)$
-      \item If $f$ is compatible, hence monotone, $|R| \leq |f(R)|$ !
-    \end{itemize}
-  \end{block}
-\end{frame}
-
-\begin{frame}{Algorithms}
-  \begin{itemize}
-    \item Naive algorithm: Builds a bisimulation
-    \item Hopcroft and Karp's algorithm\cite{hopcroft1971linear}: Bisimulation up to equivalence
-    \item Contribution of Filippo Bonchi and Damien Pous\cite{bonchi2013checking}:
-      Bisimulation up to congruence ($c : \mathcal{P}(S)^2 \to \mathcal{P}(S)^2)$):\\
-        \begin{align}
-          u(\text{R}) &= \{(X_1 \cup X_2, Y_1 \cup Y_2) | X_1 \text{ R } Y_1, X_2 \text{ R } Y_2\}\\
-          u&\text{ is monotone and preserves }\rightarrowtail\\
-          c &= (s \cup r \cup t \cup id \cup u)^\omega
-        \end{align}
-    \item Antichain algorithms
-      \cite{doyen2010antichain}\cite{abdulla2010simulation}\cite{lengal2012vata}:
-      simulation up to upward closure
-  \end{itemize}
-\end{frame}
-
 \section{Experimental Results}
+
+\begin{frame}{Language equivalence - 50 states}
+  \begin{figure}
+    \input{experiment_equivalence_n_50}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Language equivalence - 100 states}
+  \begin{figure}
+    \input{experiment_equivalence_n_100}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Language equivalence - 1000 states}
+  \begin{figure}
+    \input{experiment_equivalence_n_1000}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Language inclusion - Matches}
+  \begin{figure}
+    \input{experiment_inclusions_matches}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Language inclusion - Mismatches}
+  \begin{figure}
+    \input{experiment_inclusions_mismatches}
+  \end{figure}
+\end{frame}
 
 \section{Conclusion}
 
 \begin{frame}{Main Takeaways}
   \begin{itemize}
-    \item Naive algorithm, ACs, HK, HKC, and other variants can be uniformely
-      presented by using bisimulations.
-    \item The AC algorithms perform astonishingly bad
+    \item<1-> Naive algorithm, ACs, HK, HKC, and other variants can be uniformely
+      presented by using coinductive techniques
+    \item<2-> The AC algorithms perform surprisingly bad
       \begin{itemize}
-        \item Maybe \textbf{libvata} is not optimized for string automata
+        \item Maybe it is unfair to let \textbf{libvata} operate solely on string automata?
       \end{itemize}
   \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \begin{center}
+    \huge{Questions \& Discussion}
+  \end{center}
 \end{frame}
 
 \end{document}
