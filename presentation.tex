@@ -76,26 +76,13 @@
   \end{block}
 \end{frame}
 
-\begin{frame}{Naive algorithm for checking equivalence}
-  \begin{align*}
-    \underline{Naive(p, q)}: &\quad Q \to Q \to \{true, false\} \\
-    \text{(1) } & R := \emptyset, todo := \emptyset \\
-    \text{(2) } & todo := todo \cup \{(p, q)\} \\
-    \text{(3) } & \text{while } todo \neq \emptyset \text{ do}\\
-      & \text{(3.1)}\quad todo := todo \setminus (p', q')\\
-      & \textbf{(3.2)}\quad \textbf{if } \mathbf{(p', q') \in} \textbf{ R} \textbf{ then goto (3)}\\
-      & \text{(3.3)}\quad \text{if } o(p') \neq o(q) \text{ then return } false\\
-      & \text{(3.4)}\quad todo := todo \cup \bigcup_{a \in \Sigma}{(\delta(p', a), \delta(q', a))}\\
-      & \text{(3.5)}\quad R := R \cup \{(p', q')\} \\
-    \text{(4) } & \text{return } true\\
-  \end{align*}
-\end{frame}
+\input{algorithm}
 
 \begin{frame}{Language equivalence of NFAs}
   \begin{block}{Bisimulations on sets of states}<1->
     \begin{itemize}
       \item Relation between sets of states: $R \subseteq \mathcal{P}(Q)^2$% \times \mathcal{P}(Q)$
-      \item $R$ is bisimulation $\Leftrightarrow \forall Q_1, Q_2 \in \mathcal{P}(Q): $
+      \item $R$ is bisimulation $\iff \forall Q_1, Q_2 \in \mathcal{P}(Q): $
         \begin{itemize}
           \item $o^\#(Q_1) = o^\#(Q_2)$, and
           \item $\forall a \in \Sigma: (\delta^\#(Q_1, a), \delta^\#(Q_2, a)) \in R$
