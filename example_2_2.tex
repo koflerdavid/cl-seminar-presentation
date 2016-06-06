@@ -1,0 +1,38 @@
+\begin{frame}{Example II - ii}
+  \begin{figure}
+    \begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto]
+      \node[state] (p_1) [] {$p_1$};
+      \node[state,accepting] (p_3) [right=of p_1] {$p_3$};
+      \node[state] (p_2) [right=of p_3] {$p_2$};
+      \node[state,accepting] (p_13) [right=of p_2] {\small$p_1, p_3$};
+      \node[state,accepting] (p_23) [right=of p_13] {\small$p_2, p_3$};
+      \node[state,accepting] (p_123) [below=of p_23] {\footnotesize$p_1, p_2, p_3$};
+
+      \node[state] (q_1) [below=of p_1] {$q_1$};
+      \node[state,accepting] (q_23) [right=of q_1] {\small{$q_2, q_3$}};
+      \node[state] (q_12) [right=of q_23] {\small$q_1, q_2$};
+      \node[state,accepting] (q_123) [right=of q_12] {\small$q_1,q_2,q_3$};
+
+      \path[dashed]
+        (p_1) edge node {1} (q_1)
+        (p_3) edge node {2} (q_23)
+        (p_2) edge node {3} (q_12);
+      \path[dotted]
+        (p_13) edge node {4} (q_123)
+        (p_23) edge node {5} (q_123)
+        (p_123) edge node {6} (q_123);
+      \path[->]
+        (p_1) edge node {a} (p_3)
+        (p_3) edge node {a} (p_2)
+        (p_2) edge node {a} (p_13)
+        (p_13) edge node {a} (p_23)
+        (p_23) edge node {a} (p_123)
+        (p_123) edge [loop below] node {a} ()
+
+        (q_1) edge node {a} (q_23)
+        (q_23) edge node {a} (q_12)
+        (q_12) edge node {a} (q_123)
+        (q_123) edge [loop below] node {a} ();
+    \end{tikzpicture}
+  \end{figure}
+\end{frame}
