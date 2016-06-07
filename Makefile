@@ -15,10 +15,10 @@ presentation.bbl: presentation.aux literature.bib
 .PHONY: clean cleaner
 
 clean:
-	$(RM) *.aux *.bbl *.bcf *.blg *.log *.nav *.out *.run.xml *.snm *.toc
+	$(RM) *.aux *.bcf *.blg *.log *.nav *.out *.run.xml *.snm *.toc
 
 cleaner: clean
-	$(RM) presentation.pdf *.fdb_latexmk
+	$(RM) presentation.pdf *.fdb_latexmk *.bbl
 
 view: fast
 	$(VIEWER) presentation.pdf &
