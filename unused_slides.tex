@@ -1,4 +1,4 @@
-\begin{frame}<presentation:0>{Deterministic finite automata}
+\begin{frame}{Deterministic finite automata}
   \begin{block}{Definition}
     \begin{itemize}
       \item $M := (S, \Sigma, o, \delta)$
@@ -17,7 +17,7 @@
   \end{block}
 \end{frame}
 
-\begin{frame}<presentation:0>{Proving language equivalence}
+\begin{frame}{Proving language equivalence}
   \begin{block}{Bisimulations}
     \begin{itemize}
       \item Relation between states: $\doteqdot \subseteq S \times S$
@@ -35,7 +35,7 @@
    \end{block}
 \end{frame}
 
-\begin{frame}<presentation:0>{Lattices}
+\begin{frame}{Lattices}
   \begin{block}{Lower Semi-Lattice}
     \begin{itemize}
       \item Set $X$ with operation $+: X \to X \to X$
@@ -47,7 +47,7 @@
   \end{block}
 \end{frame}
 
-\begin{frame}<presentation:0>{States of Determinised NFA}
+\begin{frame}{States of Determinised NFA}
   \begin{itemize}
     \item Determinised NFA: $M^\# = (\mathcal{P}(S), \Sigma, o^\#, \delta^\#)$
     \item $o^\#$ and $\delta^\#$ are homomorphisms
@@ -56,7 +56,7 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}<presentation:0>{Optimizations}
+\begin{frame}{Optimizations}
   \begin{block}{Compatible functions}
     \begin{itemize}
       \item $id, f \circ g, \cup F, f^\omega$
@@ -74,7 +74,7 @@
   \end{block}
 \end{frame}
 
-\begin{frame}<presentation:0>{Algorithms}
+\begin{frame}{Algorithms}
   \begin{itemize}
     \item Naive algorithm: Builds a bisimulation
     \item Hopcroft and Karp's algorithm\cite{hopcroft1971linear}: Bisimulation up to equivalence
