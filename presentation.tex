@@ -182,33 +182,68 @@
 
 \section{Experimental Results}
 
+\begin{frame}
+  \begin{itemize}
+    \item Generate 1000 random NFAs with $n$ states
+    \item $\Sigma = \{a, b\}$
+    \item No accepting states $\Rightarrow$ no counterexamples
+    \item No counterexamples $\Rightarrow$ force worst-case behavior
+    \item Antichain implementation: \textbf{libvata}\\
+            by O. Leng{\'a}l, J. {\v{S}}im{\'a}{\v{c}}ek, and T. Vojnar\\
+            presented at TACAS 2012
+  \end{itemize}
+\end{frame}
+
 \begin{frame}{Language equivalence - 50 states}
   \begin{figure}
+
+    \vspace*{0.4cm}
     \input{experiment_equivalence_n_50}
+
   \end{figure}
+
+  %\begin{block}{}
+    The numbers in the second line are percentiles
+  %\end{block}
 \end{frame}
 
 \begin{frame}{Language equivalence - 100 states}
   \begin{figure}
+
+    \vspace*{0.05cm}
     \input{experiment_equivalence_n_100}
+
   \end{figure}
+
 \end{frame}
 
 \begin{frame}{Language equivalence - 1000 states}
   \begin{figure}
+
+    \vspace*{0.57cm}
     \input{experiment_equivalence_n_1000}
+
   \end{figure}
+
+  %\begin{block}{}
+    $\infty$: \textbf{libvata} ran out of memory
+  %\end{block}
 \end{frame}
 
 \begin{frame}{Language inclusion - Matches}
   \begin{figure}
+
     \input{experiment_inclusions_matches}
+
   \end{figure}
 \end{frame}
 
 \begin{frame}{Language inclusion - Mismatches}
   \begin{figure}
+
+    \hspace*{0.95cm}
     \input{experiment_inclusions_mismatches}
+
   \end{figure}
 \end{frame}
 
