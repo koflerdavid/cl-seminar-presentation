@@ -64,6 +64,8 @@
 
 \input{example_2_1}
 
+\section{Algorithm}
+
 \begin{frame}{Nondeterministic finite automata}
   \begin{block}{Definition}
     \begin{itemize}
@@ -78,27 +80,7 @@
 
 \input{algorithm}
 
-\begin{frame}{Language equivalence of NFAs}
-  \begin{block}{Bisimulations on sets of states}<1->
-    \begin{itemize}
-      \item Relation between sets of states: $R \subseteq \mathcal{P}(Q)^2$% \times \mathcal{P}(Q)$
-      \item $R$ is bisimulation $\iff \forall Q_1, Q_2 \in \mathcal{P}(Q): $
-        \begin{itemize}
-          \item $o^\#(Q_1) = o^\#(Q_2)$, and
-          \item $\forall a \in \Sigma: (\delta^\#(Q_1, a), \delta^\#(Q_2, a)) \in R$
-        \end{itemize}
-    \end{itemize}
-  \end{block}
-
-  \begin{block}{Language equivalence}<2->
-    \begin{itemize}
-      %\item $p \sim q \Leftrightarrow \mathcal{L}(\{p\}) = \mathcal{L}(\{q\})$
-      \item
-      Coinduction:\\
-        $\mathcal{L}(P) = \mathcal{L}(Q) \iff \exists$ bisimulation $R: (P, Q) \in R$
-    \end{itemize}
-  \end{block}
-\end{frame}
+\section{Comparing NFAs}
 
 \begin{frame}{Determinisation by powerset construction}
   \begin{figure}
@@ -124,7 +106,29 @@
   \end{block}
 \end{frame}
 
-\begin{frame}{Contribution of Pous et Bonchi}
+\begin{frame}{Language equivalence of NFAs}
+  \begin{block}{Bisimulations on sets of states}<1->
+    \begin{itemize}
+      \item Relation between sets of states: $R \subseteq \mathcal{P}(Q)^2$% \times \mathcal{P}(Q)$
+      \item $R$ is bisimulation $\iff \forall Q_1, Q_2 \in \mathcal{P}(Q): $
+        \begin{itemize}
+          \item $o^\#(Q_1) = o^\#(Q_2)$, and
+          \item $\forall a \in \Sigma: (\delta^\#(Q_1, a), \delta^\#(Q_2, a)) \in R$
+        \end{itemize}
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Language equivalence}<2->
+    \begin{itemize}
+      %\item $p \sim q \Leftrightarrow \mathcal{L}(\{p\}) = \mathcal{L}(\{q\})$
+      \item
+      Coinduction:\\
+        $\mathcal{L}(P) = \mathcal{L}(Q) \iff \exists$ bisimulation $R: (P, Q) \in R$
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Contribution of Pous and Bonchi}
   \begin{itemize}
       \item<1-> $\textbf{(2.2)}\quad \textbf{if } \mathbf{(p', q') \in} \textbf{ R} \textbf{ then goto (2)}$
       \item<2-> $(p', q') \in R$ can be replaced by $(p', q') \in f(R)$
@@ -226,6 +230,8 @@
     \huge{Questions \& Discussion}
   \end{center}
 \end{frame}
+
+\section*{Addendum}
 
 \begin{frame}{Compatibility}
   \begin{block}{Progression}
