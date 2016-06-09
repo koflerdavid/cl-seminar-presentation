@@ -149,14 +149,14 @@
         (p, q) \in R \land (q, r) \in R \Rightarrow (p, r) \in R\\
       \end{align*}
     \item<4-> Congruence closure (for determinised NFAs):\\
-        $(P_1, Q_1) \in R \land (P_2, Q_2) \in R \Rightarrow (P_1 \cup Q_2, P_2 \cup Q_2) \in R$
+        $(P_1, Q_1) \in R \land (P_2, Q_2) \in R \Rightarrow (P_1 \cup Q_1, P_2 \cup Q_2) \in R$
   \end{itemize}
 \end{frame}
 
 \input{example_2_2}
 
 \begin{frame}{Data structure for congruence closure}
-  \begin{block}{Hello}
+  \begin{block}{Implementation approaches}
     \begin{itemize}
         \item Binary decision diagrams
         \item Pous and Bonchi's approach: Set rewriting
@@ -170,8 +170,8 @@
 
 \begin{frame}{Set rewriting}
   \begin{itemize}
-    \item Store only processed pairs and their normal forms
-    \item View $R$ as set of rewrite rules:
+    \item Store processed pairs and their normal forms
+    \item Interpret $R$ as set of rewrite rules:
       \begin{align*}
         \forall (P, Q) \in R: \quad&P \rightsquigarrow P \cup Q\\
                               &Q \rightsquigarrow P \cup Q\\
@@ -220,7 +220,7 @@
       presented by using coinductive techniques
     \item<2-> The AC algorithms perform surprisingly bad
       \begin{itemize}
-        \item Maybe it is unfair to let \textbf{libvata} operate solely on string automata?
+        \item Maybe it is unfair to let \textbf{libvata} operate on string automata?
       \end{itemize}
   \end{itemize}
 \end{frame}
