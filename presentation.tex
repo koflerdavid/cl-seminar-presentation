@@ -301,4 +301,52 @@
   \end{block}
 \end{frame}
 
+\begin{frame}{Coinductive presentation of Antichain algorithms}
+  \begin{block}{Simulation}
+    \begin{itemize}
+      \item $S \subseteq Q \times \mathcal{P}(Q)$
+      \item $S$ is simulation $\iff (p, P) \in S \Rightarrow $
+        \begin{itemize}
+          \item $o(p) \leq o^\#(P)$, and
+          \item $\forall a \in \Sigma, p' \in \delta(p, a): (p', \delta^\#(P, a)) \in S$
+        \end{itemize}
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Language inclusion}<2->
+    \begin{itemize}
+      \item Coinduction: $\mathcal{L}(P) \subseteq \mathcal{L}(P') \iff \exists \text{ simulation } S: \forall p \in P: (p, P') \in S$
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Coinductive presentation of Antichain algorithms}
+  \frametitle{Antichain algorithm}
+  \begin{itemize}
+    \item Upward closure: \\
+    $\uparrow S = \{ (p, P) | \exists (p', P') \in S: (p, P) \sqsupseteq (p', P')\}$
+    \item $\forall S: \#(\uparrow S) \leq \#(S)$
+    \item Antichain algorithms compute simulation up to upward closure
+  \end{itemize}
+\end{frame}
+
+\begin{frame}<presentation:0>{Similarity}
+  \begin{block}{Motivation}
+    \begin{itemize}
+      \item
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Definition}
+    \begin{itemize}
+      \item $\sigma \subseteq Q \times Q$
+      \item $\sigma$ is similarity $\iff (p, q) \in \sigma \Rightarrow$
+        \begin{itemize}
+          \item $o(p) \leq o(q)$
+          \item $\forall a \in \Sigma, $
+        \end{itemize}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
 \end{document}
